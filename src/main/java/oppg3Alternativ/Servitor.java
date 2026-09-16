@@ -2,6 +2,7 @@ package oppg3Alternativ;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -14,11 +15,11 @@ public class Servitor extends Thread{
 
     // Objektvariabler
     private String navn;
-    private HamburgerBrett brett;
+    private BlockingQueue<Hamburger> brett;
     private AtomicBoolean running = new AtomicBoolean(false);
 
     // Konstruktør
-    public Servitor(String navn, HamburgerBrett brett) {
+    public Servitor(String navn, BlockingQueue<Hamburger> brett) {
         this.navn = navn;
         this.brett = brett;
         servitorer.add(this);
@@ -34,6 +35,7 @@ public class Servitor extends Thread{
     // Hovedloop for tråden
     @Override
     public synchronized void run() {
+        System.out.printf("%s ble lagt til i simuleringen.%n", this);
         Thread.currentThread().setName(this.toString());
         running.set(true);
         while (running.get()) {
@@ -41,7 +43,7 @@ public class Servitor extends Thread{
                 // Bruk tid på å servere hamburger
                 sleep(ThreadLocalRandom.current().nextLong(WAIT_TIME_MIN, WAIT_TIME_MAX));
                 // Prøv å ta en hamburger fra brettet, vent på hamburger hvis brettet er tomt
-                Hamburger burger = brett.burgere.take();
+                Hamburger burger = brett.take();
                 // Etter at hamburger er tatt så fortsetter programmet
                 System.out.println(this + " tar av hamburger " + burger + ". " + brett);
             } catch (InterruptedException e) {}

@@ -1,7 +1,7 @@
 package oppg3Alternativ;
 
 public class Hamburger {
-    private static int num = 0;
+    private static int num = 1;
     private int id;
 
     // Konstruktør

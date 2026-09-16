@@ -2,6 +2,7 @@ package oppg3Alternativ;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -14,11 +15,11 @@ public class Kokk extends Thread{
 
     // Objektvariabler
     private String navn;
-    private HamburgerBrett brett;
+    private BlockingQueue<Hamburger> brett;
     private AtomicBoolean running = new AtomicBoolean(false);
 
     // Konstruktør
-    public Kokk(String navn, HamburgerBrett brett) {
+    public Kokk(String navn, BlockingQueue<Hamburger> brett) {
         this.navn = navn;
         this.brett = brett;
         kokker.add(this);
@@ -34,6 +35,7 @@ public class Kokk extends Thread{
     // Hovedloop for tråden
     @Override
     public synchronized void run() {
+        System.out.printf("%s ble lagt til i simuleringen.%n", this);
         Thread.currentThread().setName(this.toString());
         running.set(true);
         while (running.get()) {
@@ -43,7 +45,7 @@ public class Kokk extends Thread{
                 // Opprett nytt hamburger-objekt
                 Hamburger burger = new Hamburger();
                 // Prøv å legge den nye hamburgeren på brettet, vent på ledig plass hvis brettet er fullt
-                brett.burgere.put(burger);
+                brett.put(burger);
                 // Etter at hamburgeren er plassert på brettet så fortsetter programmet
                 System.out.println(this + " legger på hamburger " + burger + ". " + brett);
             } catch (InterruptedException e) {}
