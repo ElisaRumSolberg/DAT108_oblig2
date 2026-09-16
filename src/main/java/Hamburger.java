@@ -1,17 +1,15 @@
 public class Hamburger {
+    private static int num = 0;
+    private int id;
 
-    private int nummer;
-
-    public Hamburger(int nummer) {
-        this.nummer = nummer;
+    // Konstruktør
+    public Hamburger() {
+        this.id = Hamburger.num++;;
     }
 
-    public int getNummer() {
-        return nummer;
-    }
-
+    // Strengrepresentasjon av objektet
     @Override
     public String toString() {
-        return "◖" + nummer + "◗";
+        return "◖" + id + "◗";
     }
 }
