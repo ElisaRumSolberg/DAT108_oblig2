@@ -1,3 +1,5 @@
+package oppg3Alternativ;
+
 public class Hamburger {
     private static int num = 0;
     private int id;

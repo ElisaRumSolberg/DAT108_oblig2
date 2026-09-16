@@ -1,3 +1,5 @@
+package oppg3;
+
 public class HamburgerBQ {
 
     private int nummer;

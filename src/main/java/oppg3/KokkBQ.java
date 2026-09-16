@@ -1,12 +1,17 @@
+package oppg3;
+
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class ServitorBQ extends Thread {
+public class KokkBQ extends Thread {
 
     private BlockingQueue<HamburgerBQ> brett;
     private String navn;
 
-    public ServitorBQ(BlockingQueue<HamburgerBQ> brett, String navn) {
+    private static AtomicInteger nesteNummer = new AtomicInteger(1);
+
+    public KokkBQ(BlockingQueue<HamburgerBQ> brett, String navn) {
         this.brett = brett;
         this.navn = navn;
     }
@@ -23,11 +28,14 @@ public class ServitorBQ extends Thread {
 
                 Thread.sleep(ventetid * 1000);
 
-                HamburgerBQ hamburger = brett.take();
+                HamburgerBQ hamburger =
+                        new HamburgerBQ(nesteNummer.getAndIncrement());
+
+                brett.put(hamburger);
 
                 System.out.println(
                         navn
-                                + " (servitør) tar av hamburger "
+                                + " (kokk) legger på hamburger "
                                 + hamburger
                                 + ". Brett: "
                                 + brett
